@@ -6,7 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="edit_message">Stel uw vraag...</string>
     <string name="button_send">Verzend</string>
-    <string name="button_voice">Spreek</string>
+    <string name="button_speak">Spreek</string>
     <string name="title_activity_chat_bubble">ChatBubbleActivity</string>
 
 </resources>

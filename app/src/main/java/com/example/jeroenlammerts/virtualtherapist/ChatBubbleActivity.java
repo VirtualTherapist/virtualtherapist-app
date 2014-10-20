@@ -12,11 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-
 public class ChatBubbleActivity extends Activity {
     private static final String TAG = "ChatActivity";
 
@@ -71,24 +66,7 @@ public class ChatBubbleActivity extends Activity {
 
         this.sendChatMessage("Hallo, waar kan ik u mee helpen?");
 
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("http://127.0.0.1/api")
-                .build();
-
-        VirtualTherapistService vtService = restAdapter.create(VirtualTherapistService.class);
-
-        vtService.addQuestion("Ben ik te dik?", new Callback<Response>() {
-            @Override
-            public void success(Response response, Response response2) {
-
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
-            }
-        });
-
+        new VirtualTherapistClient();
 
     }
 
