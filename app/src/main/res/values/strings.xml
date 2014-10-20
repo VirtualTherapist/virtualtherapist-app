@@ -9,4 +9,10 @@
     <string name="button_speak">Spreek</string>
     <string name="title_activity_chat_bubble">ChatBubbleActivity</string>
 
+
+    <string name="username">Username:</string>
+    <string name="password">Password:</string>
+    <string name="Login">Login:</string>
+    <string name="attempts">Attempts Left:</string>
+
 </resources>
