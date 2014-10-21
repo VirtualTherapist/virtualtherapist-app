@@ -64,9 +64,9 @@ public class ChatBubbleActivity extends Activity {
             }
         });
 
-        this.sendChatMessage("Hallo, waar kan ik u mee helpen?");
+        this.sendChatMessage("Hallo "+ i.getStringExtra("name") +", waar kan ik je mee helpen?");
 
-        new VirtualTherapistClient();
+//        new VirtualTherapistClient();
 
     }
 
