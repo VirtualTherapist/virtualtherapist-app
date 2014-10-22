@@ -6,13 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.virtual.therapist.android.R;
+import com.virtual.therapist.android.Config.HashUtil;
 import com.virtual.therapist.android.Network.VirtualTherapistClient;
 import com.virtual.therapist.android.Network.VirtualTherapistService;
-import com.virtual.therapist.android.Config.HashUtil;
 import com.virtual.therapist.android.Objects.User;
-
+import com.virtual.therapist.android.R;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -32,8 +30,9 @@ public class LoginActivity extends Activity
         mEmailField     = (EditText) findViewById(R.id.email);
         mPasswordField  = (EditText) findViewById(R.id.password);
 
-        mEmailField.setText("jeroenlammerts@gmail.com");
+        mEmailField.setText("admin@therapist.com");
         mPasswordField.setText("password");
+
     }
 
     public void doLogin(View view)

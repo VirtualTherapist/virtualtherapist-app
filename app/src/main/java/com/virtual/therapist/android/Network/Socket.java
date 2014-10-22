@@ -1,6 +1,7 @@
 package com.virtual.therapist.android.Network;
 
 import android.util.Log;
+import com.virtual.therapist.android.Config.Variables;
 import de.tavendo.autobahn.WebSocketConnection;
 import de.tavendo.autobahn.WebSocketHandler;
 
@@ -15,28 +16,19 @@ public class Socket
     private String uri;
     private final WebSocketConnection mConnection = new WebSocketConnection();
     private static Socket instance                = null;
+    private String response                       = null;
     private List<String> messages;
 
-    private Socket(String uri)
+    private Socket()
     {
-        this.uri = uri;
+        this.uri = Variables.WEBSOCKET_URL;
         messages = new ArrayList<String>();
-    }
-
-    public static Socket getInstance(String uri)
-    {
-        if(instance == null){ instance = new Socket(uri); }
-        return instance;
     }
 
     public static Socket getInstance()
     {
-        if(instance != null){ return instance; }
-        else
-        {
-            Log.d("Socket", "Error, you need to call getInstance(uri) first before you can call this method ( this is to setup the socket )");
-            return null;
-        }
+        if(instance == null){ instance = new Socket(); }
+        return instance;
     }
 
     public void connect()
@@ -72,7 +64,7 @@ public class Socket
 
     public void sendQuestion(String question)
     {
-        Log.d("Socket", "Sending question");
+        Log.d("Socket", "Sending question: [question]" + question );
         mConnection.sendTextMessage("[question]" + question);
     }
 
@@ -94,10 +86,10 @@ public class Socket
         return mConnection.isConnected();
     }
 
-    public List<String> retrieveMessages()
+    public List<String> getMessages()
     {
-        List<String> toReturn = messages;
+        List<String> returnList = new ArrayList<String>(messages);
         messages.clear();
-        return toReturn;
+        return returnList;
     }
 }
