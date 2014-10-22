@@ -1,18 +1,16 @@
-package com.example.jeroenlammerts.virtualtherapist;
+package com.virtual.therapist.android.Network;
 
-import org.json.JSONObject;
+import com.virtual.therapist.android.Objects.User;
 
 import retrofit.Callback;
 import retrofit.client.Response;
 import retrofit.http.Body;
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.POST;
 
-public interface VirtualTherapistService {
-
+public interface VirtualTherapistService
+{
     @POST("/question")
     public void addQuestion(@Body String question, Callback<Response> responseCallback);
 

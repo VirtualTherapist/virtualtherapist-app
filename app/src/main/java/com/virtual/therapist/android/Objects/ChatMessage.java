@@ -1,10 +1,12 @@
-package com.example.jeroenlammerts.virtualtherapist;
+package com.virtual.therapist.android.Objects;
 
-public class ChatMessage {
+public class ChatMessage
+{
     public boolean left;
     public String message;
 
-    public ChatMessage(boolean left, String message) {
+    public ChatMessage(boolean left, String message)
+    {
         super();
         this.left = left;
         this.message = message;
