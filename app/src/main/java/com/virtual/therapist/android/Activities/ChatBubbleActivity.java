@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import com.virtual.therapist.android.Config.ChatArrayAdapter;
 import com.virtual.therapist.android.Objects.ChatMessage;
-import com.example.jeroenlammerts.virtualtherapist.R;
+import com.virtual.therapist.android.R;
 
 public class ChatBubbleActivity extends Activity
 {

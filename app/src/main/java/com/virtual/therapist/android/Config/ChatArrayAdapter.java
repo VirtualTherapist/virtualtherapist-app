@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.example.jeroenlammerts.virtualtherapist.R;
+import com.virtual.therapist.android.R;
 import com.virtual.therapist.android.Objects.ChatMessage;
 
 import java.util.ArrayList;

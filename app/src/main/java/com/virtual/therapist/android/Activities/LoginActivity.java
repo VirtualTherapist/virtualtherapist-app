@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.jeroenlammerts.virtualtherapist.R;
+import com.virtual.therapist.android.R;
 import com.virtual.therapist.android.Network.VirtualTherapistClient;
 import com.virtual.therapist.android.Network.VirtualTherapistService;
 import com.virtual.therapist.android.Config.HashUtil;
