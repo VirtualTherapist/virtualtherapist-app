@@ -15,7 +15,7 @@
     <color name="white">#ffffff</color>
     <color name="bg_gradient_start">#2d72d9</color>
     <color name="bg_gradient_end">#1c52a2</color>
-    <color name="bg_button_login">#1a3b6c</color>
+    <color name="bg_button_login">#d5e3f7</color>
 
 
 </resources>
