@@ -48,7 +48,7 @@ public class LoginActivity extends Activity
             @Override
             public void success(User user, Response response)
             {
-                Intent i = new Intent(getApplicationContext(), ChatBubbleActivity.class);
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
                     i.putExtra("name", user.first_name);
                 startActivity(i);
             }
