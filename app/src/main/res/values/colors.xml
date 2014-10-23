@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- sea -->
+    <color name="sea_darker">#1a3b6c</color>
+    <color name="sea_dark">#1c52a2</color>
+    <color name="sea_primary">#2d72d9</color>
+    <color name="sea_light">#d5e3f7</color>
+    <integer-array name="sea">
+        <item>@color/sea_darker</item>
+        <item>@color/sea_dark</item>
+        <item>@color/sea_primary</item>
+        <item>@color/sea_light</item>
+    </integer-array>
+    
+    <color name="white">#ffffff</color>
+    <color name="bg_gradient_start">#2d72d9</color>
+    <color name="bg_gradient_end">#1c52a2</color>
+    <color name="bg_button_login">#1a3b6c</color>
+
+
+</resources>
