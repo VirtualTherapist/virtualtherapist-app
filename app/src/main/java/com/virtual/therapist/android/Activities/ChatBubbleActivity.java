@@ -1,6 +1,7 @@
 package com.virtual.therapist.android.Activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.media.AudioManager;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,6 +50,14 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
         Intent checkIntent = new Intent();
         checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         startActivityForResult(checkIntent, TTS_DATA_CHECK);
+
+        InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        // check if no view has focus:
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
 
         socket              = Socket.getInstance();
         socket.connect();
@@ -107,6 +117,8 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
 
     private boolean parseQuestion(String question)
     {
+        hideSoftKeyboard();
+
         //Show question into listview
         this.sendChatMessage(question);
 
@@ -148,7 +160,8 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
                             public void run()
                             {
                                 //Spreek het antwoord uit
-                                mTextToSpeech.speak(answerMessage, TextToSpeech.QUEUE_FLUSH, null);
+//                                mTextToSpeech.speak(answerMessage, TextToSpeech.QUEUE_FLUSH, null);
+                                speak(answerMessage);
 
                                 //Voeg het antwoord toe aan de chat list
                                 sendChatMessage(answerMessage);
@@ -193,7 +206,7 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
             HashMap<String, String> myHashAlarm = new HashMap<String, String>();
                 myHashAlarm.put(TextToSpeech.Engine.KEY_PARAM_STREAM, String.valueOf(AudioManager.STREAM_ALARM));
                 myHashAlarm.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "SOME MESSAGE");
-            mTextToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, myHashAlarm);
+//            mTextToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, myHashAlarm);
         }
     }
     // Fired after TTS initialization
@@ -206,7 +219,8 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
             //Eerste bericht weergeven in de listview en dan die text ook uitspreken
             String firstMessage = "Hallo "+ i.getStringExtra("name") +", waar kan ik je mee helpen?";
             this.sendChatMessage(firstMessage);
-            mTextToSpeech.speak(firstMessage, TextToSpeech.QUEUE_FLUSH, null);
+//            mTextToSpeech.speak(firstMessage, TextToSpeech.QUEUE_FLUSH, null);
+            speak(firstMessage);
         }
     }
 
@@ -214,6 +228,15 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
     public void onUtteranceCompleted(String utteranceId)
     {
         Log.i("ChatBubbleActivity", utteranceId); //utteranceId == "SOME MESSAGE"
+    }
+
+    private void hideSoftKeyboard()
+    {
+        if(getCurrentFocus()!=null && getCurrentFocus() instanceof EditText)
+        {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(chatText.getWindowToken(), 0);
+        }
     }
 
 }

@@ -1,48 +1,79 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="match_parent"
+	xmlns:tools="http://schemas.android.com/tools"
+	xmlns:flatui="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:padding="15dp"
-	android:baselineAligned="true">
+	android:background="@drawable/bg_gradient"
+	android:paddingBottom="@dimen/activity_vertical_margin"
+	android:paddingLeft="@dimen/activity_horizontal_margin"
+	android:paddingRight="@dimen/activity_horizontal_margin"
+	android:paddingTop="@dimen/activity_vertical_margin"
+	tools:context=".LoginActivity" >
 
-	<TextView
-		android:layout_width="wrap_content"
+	<LinearLayout
+		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:textAppearance="?android:attr/textAppearanceLarge"
-		android:text="@string/app_name"
-		android:id="@+id/textView"
-		android:layout_gravity="center_horizontal"
-		android:layout_marginTop="20dp" />
+		android:layout_centerInParent="true"
+		android:layout_marginLeft="15dp"
+		android:layout_marginRight="15dp"
+		android:gravity="center"
+		android:orientation="vertical">
 
-	<EditText
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:inputType="textEmailAddress"
-		android:ems="10"
-		android:id="@+id/email"
-		android:layout_gravity="center_horizontal"
-		android:layout_marginTop="25dp"
-		android:hint="E-mail adres" />
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="40dp"
+			android:text="@string/app_name"
+			android:textColor="@color/white"
+			android:textSize="30dp"
+			android:textStyle="bold" />
 
-	<EditText
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:inputType="textPassword"
-		android:ems="10"
-		android:id="@+id/password"
-		android:layout_gravity="center_horizontal"
-		android:hint="Wachtwoord"
-		android:layout_marginTop="15dp"
-		android:fontFamily="Arial"/>
+		<LinearLayout
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/bg_form_rounded"
+			android:orientation="vertical" >
 
-	<Button
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:text="Login"
-		android:id="@+id/buttonLogin"
-		android:layout_gravity="center_horizontal"
-		android:layout_marginTop="20dp"
-		android:onClick="doLogin"/>
+			<EditText
+				android:id="@+id/email"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginBottom="4dp"
+				android:background="@null"
+				android:hint="Email"
+				android:padding="5dp"
+				android:inputType="textEmailAddress"
+				android:singleLine="true"/>
 
-</LinearLayout>
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="1dp"
+				android:background="#A0A0A3" />
+
+			<EditText
+				android:id="@+id/password"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="3dp"
+				android:background="@null"
+				android:hint="Wachtwoord"
+				android:inputType="textPassword"
+				android:padding="5dp" />
+		</LinearLayout>
+
+		<com.cengalabs.flatui.views.FlatButton
+			android:id="@+id/button1"
+			flatui:fl_theme="@array/sea"
+			flatui:fl_blockButtonEffectHeight="3dp"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="25dp"
+			android:background="@drawable/bg_button_rounded"
+			android:text="Login"
+			android:textColor="@color/white"
+			android:onClick="doLogin"/>
+
+	</LinearLayout>
+
+</RelativeLayout>
