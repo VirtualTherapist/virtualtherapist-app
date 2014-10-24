@@ -24,6 +24,7 @@ public class SessionManager
     public static final String KEY_FIRST_NAME   = "firstname";
     public static final String KEY_LAST_NAME    = "lastname";
     public static final String KEY_EMAIL        = "email";
+    public static final String KEY_AUTH_TOKEN   = "authtoken";
 
     // Constructor
     public SessionManager(Context context)
@@ -84,6 +85,17 @@ public class SessionManager
 
     public String getEmail()
     {
-        return pref.getString(KEY_EMAIL, "email");
+        return pref.getString(KEY_EMAIL,  "email");
+    }
+
+    public String getToken()
+    {
+        return pref.getString(KEY_AUTH_TOKEN, "token");
+    }
+
+    public void setToken(String token)
+    {
+        editor.putString(KEY_AUTH_TOKEN, token);
+        editor.commit();
     }
 }
