@@ -24,7 +24,7 @@ public class VirtualTherapistClient
             {
                 if(!authToken.isEmpty())
                 {
-                    request.addHeader("Authorization", VirtualTherapistClient.authToken);
+                    request.addHeader("authentication", VirtualTherapistClient.authToken);
                 }
             }
         };

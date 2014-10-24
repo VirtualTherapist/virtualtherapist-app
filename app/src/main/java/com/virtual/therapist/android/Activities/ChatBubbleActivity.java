@@ -1,23 +1,31 @@
 package com.virtual.therapist.android.Activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.DataSetObserver;
+import android.location.Location;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.text.Editable;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnKeyListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import com.virtual.therapist.android.Config.ChatArrayAdapter;
+import com.virtual.therapist.android.Config.LocationUtil;
 import com.virtual.therapist.android.Network.Socket;
+import com.virtual.therapist.android.Network.VirtualTherapistClient;
+import com.virtual.therapist.android.Objects.ChatContext;
 import com.virtual.therapist.android.Objects.ChatMessage;
 import com.virtual.therapist.android.R;
 
@@ -26,8 +34,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitListener, TextToSpeech.OnUtteranceCompletedListener
 {
+    private final String[] MOODS = {"Blij", "Verdrietig", "Boos", "Depressief", "Anders.."};
+    private int chatId = -1;
     private ChatArrayAdapter chatArrayAdapter;
     private ListView listView;
     private EditText chatText;
@@ -46,6 +60,76 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
         i = getIntent();
         setContentView(R.layout.activity_chat);
 
+        showContextDialog();
+    }
+
+    private void showContextDialog() {
+        final
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("In wat voor stemming ben je?")
+                .setItems(MOODS, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(which == MOODS.length-1) {
+                            showOtherDialog();
+                        }else{
+                            setMoodAndLocation(MOODS[which]);
+                        }
+
+                    }
+                });
+        builder.create().show();
+    }
+
+    private void showOtherDialog() {
+        final EditText text = new EditText(this);
+        new AlertDialog.Builder(this)
+                .setTitle("Anders, namelijk:")
+                .setView(text)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        Editable input = text.getText();
+                        setMoodAndLocation(input.toString());
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Do nothing.
+            }
+        }).show();
+    }
+
+    private void setMoodAndLocation(String mood) {
+        ChatContext chatContext = new ChatContext();
+        chatContext.setMood(mood);
+        Location location = LocationUtil.getInstance(getApplicationContext()).getLastLocation();
+        if(location != null) {
+            chatContext.setLat(location.getLatitude());
+            chatContext.setLng(location.getLongitude());
+        }
+        System.out.println(chatContext.toString());
+        sendContextToServerAndStartChat(chatContext);
+    }
+
+    private void sendContextToServerAndStartChat(ChatContext context) {
+        VirtualTherapistClient.getInstance().getVtService().context(context.getMood(), context.getLat(), context.getLng(), new Callback<Integer>() {
+            @Override
+            public void success(Integer integer, Response response) {
+                chatId = integer;
+                initChat();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+                if(error.getResponse().getStatus() == 401) {
+                    Toast.makeText(getApplicationContext(), "Niet ingelogd", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getApplicationContext(), "Er is iets misgegaan, probeer het opnieuw", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void initChat() {
         //Controller of text to speech aanwezig is
         Intent checkIntent = new Intent();
         checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
@@ -69,7 +153,7 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
         chatArrayAdapter    = new ChatArrayAdapter(getApplicationContext(), R.layout.activity_chat_singlemessage);
         listView.setAdapter(chatArrayAdapter);
 
-        chatText.setOnKeyListener(new OnKeyListener()
+        chatText.setOnKeyListener(new View.OnKeyListener()
         {
             public boolean onKey(View v, int keyCode, KeyEvent event)
             {
