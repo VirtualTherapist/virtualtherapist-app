@@ -8,21 +8,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.*;
+import com.virtual.therapist.android.Config.SessionManager;
 import com.virtual.therapist.android.R;
 
 public class MainActivity extends Activity implements NavigationDrawerFragment.NavigationDrawerCallbacks
 {
-
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
     private NavigationDrawerFragment mNavigationDrawerFragment;
-
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
     private CharSequence mTitle;
     private Intent i;
+    private SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -30,7 +24,7 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        i = getIntent();
+        session = new SessionManager(getApplicationContext());
 
         mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
@@ -57,8 +51,10 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
             case 2:
 //                mTitle = getString(R.string.title_section2);
                 Intent intent = new Intent(getApplicationContext(), ChatBubbleActivity.class);
-                    intent.putExtra("name", i.getStringExtra("name"));
                 startActivity(intent);
+                break;
+            case 3:
+                session.logoutUser();
                 break;
         }
     }

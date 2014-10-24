@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import com.virtual.therapist.android.Config.HashUtil;
+import com.virtual.therapist.android.Config.SessionManager;
 import com.virtual.therapist.android.Network.VirtualTherapistClient;
 import com.virtual.therapist.android.Network.VirtualTherapistService;
 import com.virtual.therapist.android.Objects.User;
@@ -20,12 +21,23 @@ public class LoginActivity extends Activity
 {
     private VirtualTherapistService apiClient = VirtualTherapistClient.getInstance().getVtService();
     private EditText mEmailField, mPasswordField;
+    private SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        session = new SessionManager(getApplicationContext());
+
+        if ( session.isLoggedIn() )
+        {
+            Intent myIntent = new Intent(this, MainActivity.class);
+                myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            LoginActivity.this.startActivity(myIntent);
+        }
 
         mEmailField     = (EditText) findViewById(R.id.email);
         mPasswordField  = (EditText) findViewById(R.id.password);
@@ -37,7 +49,7 @@ public class LoginActivity extends Activity
 
     public void doLogin(View view)
     {
-        String emailString      = mEmailField.getText().toString();
+        final String emailString      = mEmailField.getText().toString();
         String passwordString   = mPasswordField.getText().toString();
 
         String authentication   = HashUtil.createHash(emailString, passwordString);
@@ -48,8 +60,9 @@ public class LoginActivity extends Activity
             @Override
             public void success(User user, Response response)
             {
+                session.createLoginSession(user.first_name, user.last_name, emailString);
+
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                    i.putExtra("name", user.first_name);
                 startActivity(i);
             }
 

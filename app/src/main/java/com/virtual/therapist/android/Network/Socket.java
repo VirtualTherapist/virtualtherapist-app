@@ -4,9 +4,13 @@ import android.util.Log;
 import com.virtual.therapist.android.Config.Variables;
 import de.tavendo.autobahn.WebSocketConnection;
 import de.tavendo.autobahn.WebSocketHandler;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Akatchi on 22-10-2014.
@@ -18,11 +22,15 @@ public class Socket
     private static Socket instance                = null;
     private String response                       = null;
     private List<String> messages;
+    private List<BasicNameValuePair> header;
 
     private Socket()
     {
         this.uri = Variables.WEBSOCKET_URL;
         messages = new ArrayList<String>();
+
+        header = new ArrayList<BasicNameValuePair>();
+        header.add(new BasicNameValuePair("Authorization", VirtualTherapistClient.authToken));
     }
 
     public static Socket getInstance()
@@ -64,14 +72,13 @@ public class Socket
 
     public void sendQuestion(String question)
     {
-        Log.d("Socket", "Sending question: [question]" + question );
-        mConnection.sendTextMessage("[question]" + question);
-    }
+        Map<String, String> toSend = new HashMap<String, String>();
+        toSend.put("token", VirtualTherapistClient.authToken);
+        toSend.put("question", question);
 
-    public void sendContext(String context)
-    {
-        Log.d("Socket", "Sending context");
-        mConnection.sendTextMessage("[context]" + context);
+        Log.d("Socket", "Sending question: " + new JSONObject(toSend).toString() );
+
+        mConnection.sendTextMessage(new JSONObject(toSend).toString());
     }
 
     public void disconnect()
