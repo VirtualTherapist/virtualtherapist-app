@@ -47,6 +47,7 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
     private static int TTS_DATA_CHECK = 1;
     private TextToSpeech mTextToSpeech;
     private SessionManager session;
+    private ChatContext chatContext;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -57,15 +58,20 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
         showContextDialog();
     }
 
-    private void showContextDialog() {
-        final
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    private void showContextDialog()
+    {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("In wat voor stemming ben je?")
-                .setItems(MOODS, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(which == MOODS.length-1) {
+                .setItems(MOODS, new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int which)
+                    {
+                        if(which == MOODS.length-1)
+                        {
                             showOtherDialog();
-                        }else{
+                        }
+                        else
+                        {
                             setMoodAndLocation(MOODS[which]);
                         }
 
@@ -74,28 +80,35 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
         builder.create().show();
     }
 
-    private void showOtherDialog() {
+    private void showOtherDialog()
+    {
         final EditText text = new EditText(this);
         new AlertDialog.Builder(this)
                 .setTitle("Anders, namelijk:")
                 .setView(text)
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int whichButton)
+                    {
                         Editable input = text.getText();
                         setMoodAndLocation(input.toString());
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                // Do nothing.
-            }
-        }).show();
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                    {
+                        public void onClick(DialogInterface dialog, int whichButton)
+                        {
+                            // Do nothing.
+                        }
+                    }).show();
     }
 
-    private void setMoodAndLocation(String mood) {
-        ChatContext chatContext = new ChatContext();
+    private void setMoodAndLocation(String mood)
+    {
+        chatContext = new ChatContext();
         chatContext.setMood(mood);
         Location location = LocationUtil.getInstance(getApplicationContext()).getLastLocation();
-        if(location != null) {
+        if(location != null)
+        {
             chatContext.setLat(location.getLatitude());
             chatContext.setLng(location.getLongitude());
         }
@@ -103,27 +116,35 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
         sendContextToServerAndStartChat(chatContext);
     }
 
-    private void sendContextToServerAndStartChat(ChatContext context) {
-        VirtualTherapistClient.getInstance().getVtService().context(context.getMood(), context.getLat(), context.getLng(), new Callback<Integer>() {
+    private void sendContextToServerAndStartChat(ChatContext context)
+    {
+        VirtualTherapistClient.getInstance().getVtService().context(context.getMood(), context.getLat(), context.getLng(), new Callback<Integer>()
+        {
             @Override
-            public void success(Integer integer, Response response) {
+            public void success(Integer integer, Response response)
+            {
                 chatId = integer;
                 initChat();
             }
 
             @Override
-            public void failure(RetrofitError error) {
+            public void failure(RetrofitError error)
+            {
 
-                if(error.getResponse().getStatus() == 401) {
+                if(error.getResponse().getStatus() == 401)
+                {
                     Toast.makeText(getApplicationContext(), "Niet ingelogd", Toast.LENGTH_SHORT).show();
-                }else {
+                }
+                else
+                {
                     Toast.makeText(getApplicationContext(), "Er is iets misgegaan, probeer het opnieuw", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    private void initChat() {
+    private void initChat()
+    {
         session = new SessionManager(getApplicationContext());
         //Controller of text to speech aanwezig is
         Intent checkIntent = new Intent();
@@ -134,7 +155,8 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
 
         // check if no view has focus:
         View view = this.getCurrentFocus();
-        if (view != null) {
+        if (view != null)
+        {
             inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
 
@@ -215,7 +237,7 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
     {
         try
         {
-            socket.sendQuestion(question);
+            socket.sendQuestion(question, chatId);
 
             Thread t = new Thread()
             {

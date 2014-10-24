@@ -33,6 +33,8 @@ public class LoginActivity extends Activity
 
         if ( session.isLoggedIn() )
         {
+            VirtualTherapistClient.authToken = session.getToken();
+
             Intent myIntent = new Intent(this, MainActivity.class);
                 myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -50,9 +52,9 @@ public class LoginActivity extends Activity
     public void doLogin(View view)
     {
         final String emailString      = mEmailField.getText().toString();
-        String passwordString   = mPasswordField.getText().toString();
+        String passwordString         = mPasswordField.getText().toString();
 
-        String authentication   = HashUtil.createHash(emailString, passwordString);
+        final String authentication   = HashUtil.createHash(emailString, passwordString);
         VirtualTherapistClient.authToken = authentication;
 
         apiClient.login(authentication, new Callback<User>()
@@ -61,6 +63,7 @@ public class LoginActivity extends Activity
             public void success(User user, Response response)
             {
                 session.createLoginSession(user.first_name, user.last_name, emailString);
+                session.setToken(authentication);
 
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);
