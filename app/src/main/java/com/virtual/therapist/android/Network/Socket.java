@@ -70,12 +70,13 @@ public class Socket
         mConnection.sendTextMessage(message);
     }
 
-    public void sendQuestion(String question, int chatId)
+    public void sendQuestion(String question, int chatId, String email)
     {
         Map<String, String> toSend = new HashMap<String, String>();
-        toSend.put("token", VirtualTherapistClient.authToken);
-        toSend.put("question", question);
-        toSend.put("chatid", Integer.toString(chatId));
+            toSend.put("token",     VirtualTherapistClient.authToken);
+            toSend.put("question",  question);
+            toSend.put("chatid",    Integer.toString(chatId));
+            toSend.put("email",     email);
 
         Log.d("Socket", "Sending question: " + new JSONObject(toSend).toString() );
 

@@ -237,7 +237,7 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
     {
         try
         {
-            socket.sendQuestion(question, chatId);
+            socket.sendQuestion(question, chatId, session.getEmail());
 
             Thread t = new Thread()
             {

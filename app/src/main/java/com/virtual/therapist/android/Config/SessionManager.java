@@ -83,6 +83,11 @@ public class SessionManager
         return pref.getString(KEY_LAST_NAME,  "lastname");
     }
 
+    public String getEmail()
+    {
+        return pref.getString(KEY_EMAIL,  "email");
+    }
+
     public String getToken()
     {
         return pref.getString(KEY_AUTH_TOKEN, "token");
