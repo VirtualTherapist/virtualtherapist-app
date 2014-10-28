@@ -65,7 +65,7 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
         popDialog.setPositiveButton(R.string.dialog_ok,
             new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
-                    finishRating(rating.getProgress());
+                    saveRating(rating.getProgress());
                 }
             });
 
@@ -73,11 +73,24 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
         popDialog.show();
     }
 
-    public void finishRating(int stars){
+    public void saveRating(int stars){
+        VirtualTherapistClient.getInstance().getVtService().rating(stars, new Callback<Integer>()
+        {
+            @Override
+            public void success(Integer integer, Response response)
+            {
+                finishRating();
+            }
+            
+            @Override
+            public void failure(RetrofitError error)
+            {
+                // error handling
+            }
+        });
+    }
 
-        // save stars with api call
-        System.out.println(stars);
-
+    public void finishRating(){
         super.onBackPressed();
     }
 

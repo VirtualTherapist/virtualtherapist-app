@@ -22,4 +22,8 @@ public interface VirtualTherapistService
     @FormUrlEncoded
     @POST("/context")
     public void context(@Field("mood") String mood, @Field("lat") double lat, @Field("lng") double lng, Callback<Integer> callback);
+
+    @FormUrlEncoded
+    @POST("/rating")
+    public void rating(@Field("rating") int rating, Callback<Integer> callback);
 }
