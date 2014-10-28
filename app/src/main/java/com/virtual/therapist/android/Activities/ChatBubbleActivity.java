@@ -50,6 +50,51 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
     private ChatContext chatContext;
 
     @Override
+    public void onBackPressed() {
+
+        final AlertDialog.Builder popDialog = new AlertDialog.Builder(this);
+        final RatingBar rating = new RatingBar(this);
+        rating.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        rating.setNumStars(5);
+        rating.setStepSize(0.8333f);
+
+        popDialog.setTitle(R.string.rating_dialog_title);
+        popDialog.setView(rating);
+
+        // Button OK
+        popDialog.setPositiveButton(R.string.dialog_ok,
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    saveRating(rating.getProgress());
+                }
+            });
+
+        popDialog.create();
+        popDialog.show();
+    }
+
+    public void saveRating(int stars){
+        VirtualTherapistClient.getInstance().getVtService().rating(stars, new Callback<Integer>()
+        {
+            @Override
+            public void success(Integer integer, Response response)
+            {
+                finishRating();
+            }
+            
+            @Override
+            public void failure(RetrofitError error)
+            {
+                // error handling
+            }
+        });
+    }
+
+    public void finishRating(){
+        super.onBackPressed();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -61,7 +106,7 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
     private void showContextDialog()
     {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("In wat voor stemming ben je?")
+        builder.setTitle(R.string.mood_dialog_title)
                 .setItems(MOODS, new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int which)
@@ -84,16 +129,16 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
     {
         final EditText text = new EditText(this);
         new AlertDialog.Builder(this)
-                .setTitle("Anders, namelijk:")
+                .setTitle(R.string.other_mood_dialog_title)
                 .setView(text)
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener()
+                .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int whichButton)
                     {
                         Editable input = text.getText();
                         setMoodAndLocation(input.toString());
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                }).setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener()
                     {
                         public void onClick(DialogInterface dialog, int whichButton)
                         {
