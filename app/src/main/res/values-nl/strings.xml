@@ -15,5 +15,12 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="login_failed">Logingegevens onjuist</string>
     <string name="title_activity_socket">SocketActivity</string>
+    <string name="rating_dialog_title">Hoe waardevol was de hulp?</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Annuleer</string>
+
+    <string name="other_mood_dialog_title">Anders, namelijk:</string>
+    <string name="mood_dialog_title">In wat voor stemming ben je?</string>
+
 
 </resources>
