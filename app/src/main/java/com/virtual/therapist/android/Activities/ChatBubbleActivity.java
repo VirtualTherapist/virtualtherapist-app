@@ -62,6 +62,7 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
     private ChatContext chatContext;
 
     private AnimatedGifImageView gifView;
+    private TTSUtteranceProgressListener progressListener;
 
     @Override
     public void onBackPressed() {
@@ -402,6 +403,12 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
             HashMap<String, String> myHashAlarm = new HashMap<String, String>();
                 myHashAlarm.put(TextToSpeech.Engine.KEY_PARAM_STREAM, String.valueOf(AudioManager.STREAM_ALARM));
                 myHashAlarm.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "Executing text to speech");
+            if(text.equals("Ik hou van chocolade!")) {
+                mTextToSpeech.setPitch(20);
+                mTextToSpeech.setSpeechRate(1.2f);
+                progressListener.dontResetImage();
+                gifView.setAnimatedGif(R.drawable.spongebob, AnimatedGifImageView.TYPE.FIT_CENTER);
+            }
             mTextToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, myHashAlarm);
         }
     }
@@ -411,7 +418,8 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
         if(status == TextToSpeech.SUCCESS)
         {
             //mTextToSpeech.setOnUtteranceCompletedListener(this);
-            mTextToSpeech.setOnUtteranceProgressListener(new TTSUtteranceProgressListener(this, gifView));
+            progressListener = new TTSUtteranceProgressListener(this, gifView, mTextToSpeech);
+            mTextToSpeech.setOnUtteranceProgressListener(progressListener);
 
             mTextToSpeech.setSpeechRate((float) 0.8);
             mTextToSpeech.setPitch((float) 1.3);
