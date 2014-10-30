@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -392,7 +393,20 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
                 myHashAlarm.put(TextToSpeech.Engine.KEY_PARAM_STREAM, String.valueOf(AudioManager.STREAM_ALARM));
                 myHashAlarm.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "Executing text to speech");
             mTextToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, myHashAlarm);
-            gifView.setAnimatedGif(R.drawable.vt_talking, AnimatedGifImageView.TYPE.FIT_CENTER);
+            int gifId = 0;
+            Random random = new Random();
+            int randomInt = random.nextInt(2);
+            switch (randomInt) {
+                case 0: gifId = R.drawable.vt_talking;
+                        break;
+                case 1: gifId = R.drawable.vt_talking1;
+                        break;
+                case 2: gifId = R.drawable.vt_talking2;
+                        break;
+                default: gifId = R.drawable.vt_talking;
+                         break;
+            }
+            gifView.setAnimatedGif(gifId, AnimatedGifImageView.TYPE.FIT_CENTER);
         }
     }
     // Fired after TTS initialization
