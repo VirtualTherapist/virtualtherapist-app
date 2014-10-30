@@ -7,18 +7,17 @@
 	android:layout_height="fill_parent"
 	android:background="#fff">
 
-	<ImageView
+	<View
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/img_therapist"
-		android:src="@drawable/therapist" />
+        android:layout_below="@+id/listView1"/>
 
 	<ListView
 		android:id="@+id/listView1"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_above="@+id/chatText"
-		android:layout_below="@+id/img_therapist"/>
+		android:layout_above="@+id/chatText" />
 
 	<com.cengalabs.flatui.views.FlatEditText
 		android:id="@+id/chatText"
