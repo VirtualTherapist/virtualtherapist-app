@@ -3,20 +3,19 @@
 <RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:flatui="http://schemas.android.com/apk/res-auto"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
 	android:background="#fff">
 
 	<View
-		android:layout_width="match_parent"
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:id="@+id/img_therapist"
-        android:layout_below="@+id/listView1"/>
+		android:id="@+id/img_therapist"/>
 
 	<ListView
 		android:id="@+id/listView1"
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
+		android:layout_height="182dp"
 		android:layout_above="@+id/chatText" />
 
 	<com.cengalabs.flatui.views.FlatEditText
