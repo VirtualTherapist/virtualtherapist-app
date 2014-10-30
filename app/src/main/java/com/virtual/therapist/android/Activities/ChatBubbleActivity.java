@@ -17,33 +17,21 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RatingBar;
-import android.widget.Toast;
-
-import com.virtual.therapist.android.Config.AnimatedGifImageView;
-import com.virtual.therapist.android.Config.ChatArrayAdapter;
-import com.virtual.therapist.android.Config.LocationUtil;
-import com.virtual.therapist.android.Config.SessionManager;
-import com.virtual.therapist.android.Config.TTSUtteranceProgressListener;
+import android.widget.*;
+import com.virtual.therapist.android.Config.*;
 import com.virtual.therapist.android.Network.Socket;
 import com.virtual.therapist.android.Network.VirtualTherapistClient;
 import com.virtual.therapist.android.Objects.ChatContext;
 import com.virtual.therapist.android.Objects.ChatMessage;
 import com.virtual.therapist.android.R;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitListener
 {
@@ -90,12 +78,12 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
         popDialog.create();
         popDialog.show();
 
-        if(mTextToSpeech.isSpeaking())
-        {
+//        if(mTextToSpeech.isSpeaking())
+//        {
             mTextToSpeech.stop();
-            mTextToSpeech.setPitch((float) 5.0);
-            speak("DAN NIET");
-        }
+//            mTextToSpeech.setPitch((float) 5.0);
+            speak("Tot volgende keer!");
+//        }
 
     }
 
