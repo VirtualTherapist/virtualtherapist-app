@@ -9,7 +9,6 @@ import android.database.DataSetObserver;
 import android.location.Location;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.text.Editable;
 import android.util.Log;
@@ -18,27 +17,35 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
+import android.widget.AbsListView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RatingBar;
+import android.widget.Toast;
+
 import com.virtual.therapist.android.Config.AnimatedGifImageView;
 import com.virtual.therapist.android.Config.ChatArrayAdapter;
 import com.virtual.therapist.android.Config.LocationUtil;
 import com.virtual.therapist.android.Config.SessionManager;
+import com.virtual.therapist.android.Config.TTSUtteranceProgressListener;
 import com.virtual.therapist.android.Network.Socket;
 import com.virtual.therapist.android.Network.VirtualTherapistClient;
 import com.virtual.therapist.android.Objects.ChatContext;
 import com.virtual.therapist.android.Objects.ChatMessage;
 import com.virtual.therapist.android.R;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
-public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitListener, TextToSpeech.OnUtteranceCompletedListener
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
+public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitListener
 {
     private final String[] MOODS = {"Blij", "Verdrietig", "Boos", "Depressief", "Anders.."};
     private int chatId = -1;
@@ -396,20 +403,6 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
                 myHashAlarm.put(TextToSpeech.Engine.KEY_PARAM_STREAM, String.valueOf(AudioManager.STREAM_ALARM));
                 myHashAlarm.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "Executing text to speech");
             mTextToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, myHashAlarm);
-            int gifId = 0;
-            Random random = new Random();
-            int randomInt = random.nextInt(2);
-            switch (randomInt) {
-                case 0: gifId = R.drawable.vt_talking;
-                        break;
-                case 1: gifId = R.drawable.vt_talking1;
-                        break;
-                case 2: gifId = R.drawable.vt_talking2;
-                        break;
-                default: gifId = R.drawable.vt_talking;
-                         break;
-            }
-            gifView.setAnimatedGif(gifId, AnimatedGifImageView.TYPE.FIT_CENTER);
         }
     }
     // Fired after TTS initialization
@@ -417,7 +410,8 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
     {
         if(status == TextToSpeech.SUCCESS)
         {
-            mTextToSpeech.setOnUtteranceCompletedListener(this);
+            //mTextToSpeech.setOnUtteranceCompletedListener(this);
+            mTextToSpeech.setOnUtteranceProgressListener(new TTSUtteranceProgressListener(this, gifView));
 
             mTextToSpeech.setSpeechRate((float) 0.8);
             mTextToSpeech.setPitch((float) 1.3);
@@ -433,13 +427,6 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
     // It's callback
     public void onUtteranceCompleted(String utteranceId)
     {
-        Handler mainHandler = new Handler(this.getMainLooper());
-        mainHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                gifView.setImageResource(R.drawable.vt_talking);
-            }
-        });
         Log.i("ChatBubbleActivity", utteranceId); //utteranceId == "SOME MESSAGE"
     }
 
@@ -451,5 +438,4 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
             imm.hideSoftInputFromWindow(chatText.getWindowToken(), 0);
         }
     }
-
 }
