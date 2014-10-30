@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.text.Editable;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -54,27 +55,32 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
 
         final AlertDialog.Builder popDialog = new AlertDialog.Builder(this);
         final RatingBar rating = new RatingBar(this);
-        rating.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         rating.setNumStars(5);
-        rating.setStepSize(0.8333f);
+        rating.setStepSize(1);
+        rating.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        popDialog.setTitle(R.string.rating_dialog_title);
-        popDialog.setView(rating);
+        LinearLayout parent = new LinearLayout(this);
+        parent.setGravity(Gravity.CENTER);
+        parent.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        parent.addView(rating);
+
+        popDialog.setTitle(this.getResources().getString(R.string.rating_dialog_title));
+        popDialog.setView(parent);
 
         // Button OK
         popDialog.setPositiveButton(R.string.dialog_ok,
-            new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    saveRating(rating.getProgress());
-                }
-            });
-
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        saveRating(rating.getProgress());
+                    }
+                });
         popDialog.create();
         popDialog.show();
+
     }
 
     public void saveRating(int stars){
-        VirtualTherapistClient.getInstance().getVtService().rating(stars, new Callback<Integer>()
+        VirtualTherapistClient.getInstance().getVtService().rating(stars, chatId, new Callback<Integer>()
         {
             @Override
             public void success(Integer integer, Response response)
@@ -85,7 +91,7 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
             @Override
             public void failure(RetrofitError error)
             {
-                // error handling
+                finishRating();
             }
         });
     }

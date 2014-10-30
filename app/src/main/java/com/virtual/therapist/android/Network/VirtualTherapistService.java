@@ -25,5 +25,5 @@ public interface VirtualTherapistService
 
     @FormUrlEncoded
     @POST("/rating")
-    public void rating(@Field("rating") int rating, Callback<Integer> callback);
+    public void rating(@Field("rating") int rating, @Field("chat_id") int chat_id, Callback<Integer> callback);
 }
