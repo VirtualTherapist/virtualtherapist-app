@@ -9,13 +9,23 @@ import android.database.DataSetObserver;
 import android.location.Location;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.text.Editable;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
+import android.widget.AbsListView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RatingBar;
+import android.widget.Toast;
+
+import com.virtual.therapist.android.Config.AnimatedGifImageView;
 import com.virtual.therapist.android.Config.ChatArrayAdapter;
 import com.virtual.therapist.android.Config.LocationUtil;
 import com.virtual.therapist.android.Config.SessionManager;
@@ -24,14 +34,15 @@ import com.virtual.therapist.android.Network.VirtualTherapistClient;
 import com.virtual.therapist.android.Objects.ChatContext;
 import com.virtual.therapist.android.Objects.ChatMessage;
 import com.virtual.therapist.android.R;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitListener, TextToSpeech.OnUtteranceCompletedListener
 {
@@ -48,6 +59,8 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
     private TextToSpeech mTextToSpeech;
     private SessionManager session;
     private ChatContext chatContext;
+
+    private AnimatedGifImageView gifView;
 
     @Override
     public void onBackPressed() {
@@ -99,8 +112,22 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
+        //setContentView(new GIFView(this));
         showContextDialog();
+        View v = findViewById(R.id.img_therapist);
+        ViewGroup parent = (ViewGroup) v.getParent();
+        int index = parent.indexOfChild(v);
+        parent.removeView(v);
+        gifView = new AnimatedGifImageView(this);
+        gifView.setImageResource(R.drawable.vt_talking);
+        parent.addView(gifView, index);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+
     }
 
     private void showContextDialog()
@@ -334,6 +361,12 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
                 mTextToSpeech = new TextToSpeech(this, this);
 
                 Locale locale = this.getResources().getConfiguration().locale;
+                /*
+                int index = 0;
+                for(Locale locale1 : Locale.getAvailableLocales()) {
+                    System.out.println(locale1.getDisplayName() + " " + index);
+                    index ++;
+                }*/
                 mTextToSpeech.setLanguage(locale);
             } else
             {
@@ -352,7 +385,8 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
             HashMap<String, String> myHashAlarm = new HashMap<String, String>();
                 myHashAlarm.put(TextToSpeech.Engine.KEY_PARAM_STREAM, String.valueOf(AudioManager.STREAM_ALARM));
                 myHashAlarm.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "Executing text to speech");
-//            mTextToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, myHashAlarm);
+            mTextToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, myHashAlarm);
+            gifView.setAnimatedGif(R.drawable.vt_talking, AnimatedGifImageView.TYPE.FIT_CENTER);
         }
     }
     // Fired after TTS initialization
@@ -373,6 +407,13 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
     // It's callback
     public void onUtteranceCompleted(String utteranceId)
     {
+        Handler mainHandler = new Handler(this.getMainLooper());
+        mainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                gifView.setImageResource(R.drawable.vt_talking);
+            }
+        });
         Log.i("ChatBubbleActivity", utteranceId); //utteranceId == "SOME MESSAGE"
     }
 
