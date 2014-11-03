@@ -2,6 +2,7 @@ package com.virtual.therapist.android.Activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.text.Editable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -55,29 +57,32 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
     @Override
     public void onBackPressed() {
 
-        final AlertDialog.Builder popDialog = new AlertDialog.Builder(this);
-        final RatingBar rating = new RatingBar(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialoglayout = inflater.inflate(R.layout.rating, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialoglayout);
+        builder.setTitle(this.getResources().getString(R.string.rating_dialog_title));
+
+        final RatingBar rating = (RatingBar)dialoglayout.findViewById(R.id.ratingBar);
         rating.setNumStars(5);
         rating.setStepSize(1);
-        rating.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        LinearLayout parent = new LinearLayout(this);
-        parent.setGravity(Gravity.CENTER);
-        parent.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-        parent.addView(rating);
+        final EditText input = (EditText)dialoglayout.findViewById(R.id.editText);
 
-        popDialog.setTitle(this.getResources().getString(R.string.rating_dialog_title));
-        popDialog.setView(parent);
-
-        // Button OK
-        popDialog.setPositiveButton(R.string.dialog_ok,
+        builder.setPositiveButton(R.string.dialog_ok,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        saveRating(rating.getProgress());
+                        saveRating(rating.getProgress(), input.getText().toString());
                     }
                 });
-        popDialog.create();
-        popDialog.show();
+        builder.setNegativeButton(R.string.dialog_cancel,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finishRating();
+                    }
+                });
+
+        builder.show();
 
 //        if(mTextToSpeech.isSpeaking())
 //        {
@@ -88,8 +93,8 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
 
     }
 
-    public void saveRating(int stars){
-        VirtualTherapistClient.getInstance().getVtService().rating(stars, chatId, new Callback<Integer>()
+    public void saveRating(int stars, String comment){
+        VirtualTherapistClient.getInstance().getVtService().rating(stars, comment, chatId, new Callback<Integer>()
         {
             @Override
             public void success(Integer integer, Response response)

@@ -37,18 +37,6 @@ public class VirtualTherapistClient
 
         vtService = restAdapter.create(VirtualTherapistService.class);
 
-//        vtService.addQuestion("Ben ik te dik?", new Callback<Response>() {
-//            @Override
-//            public void success(Response response, Response response2) {
-//                System.out.println("response....");
-//            }
-//
-//            @Override
-//            public void failure(RetrofitError error) {
-//                System.out.println("failure...");
-//            }
-//        });
-
     }
 
     public static VirtualTherapistClient getInstance()
