@@ -2,7 +2,6 @@ package com.virtual.therapist.android.Activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,7 +12,6 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.text.Editable;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import com.virtual.therapist.android.Config.*;
+import com.virtual.therapist.android.Network.ApiErrorHandler;
 import com.virtual.therapist.android.Network.Socket;
 import com.virtual.therapist.android.Network.VirtualTherapistClient;
 import com.virtual.therapist.android.Objects.ChatContext;
@@ -105,7 +104,7 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
             @Override
             public void failure(RetrofitError error)
             {
-                finishRating();
+                new ApiErrorHandler(getApplicationContext(), error);
             }
         });
     }
@@ -214,15 +213,7 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
             @Override
             public void failure(RetrofitError error)
             {
-
-                if(error.getResponse().getStatus() == 401)
-                {
-                    Toast.makeText(getApplicationContext(), "Niet ingelogd", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Toast.makeText(getApplicationContext(), "Er is iets misgegaan, probeer het opnieuw", Toast.LENGTH_SHORT).show();
-                }
+                new ApiErrorHandler(getApplicationContext(), error);
             }
         });
     }

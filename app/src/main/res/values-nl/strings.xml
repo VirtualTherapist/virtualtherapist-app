@@ -22,5 +22,8 @@
     <string name="other_mood_dialog_title">Anders, namelijk:</string>
     <string name="mood_dialog_title">In wat voor stemming ben je?</string>
 
+    <string name="error_network">Geen netwerk</string>
+    <string name="error_autorization">Logingegevens onjuist</string>
+    <string name="error_general">Onbekende fout opgetreden</string>
 
 </resources>

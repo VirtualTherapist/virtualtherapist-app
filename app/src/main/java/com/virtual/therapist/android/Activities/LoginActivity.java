@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import com.virtual.therapist.android.Config.HashUtil;
 import com.virtual.therapist.android.Config.SessionManager;
+import com.virtual.therapist.android.Network.ApiErrorHandler;
 import com.virtual.therapist.android.Network.VirtualTherapistClient;
 import com.virtual.therapist.android.Network.VirtualTherapistService;
 import com.virtual.therapist.android.Objects.User;
@@ -71,7 +72,7 @@ public class LoginActivity extends Activity
 
             @Override
             public void failure(RetrofitError error) {
-                Toast.makeText(getApplicationContext(), R.string.login_failed, Toast.LENGTH_SHORT).show();
+                new ApiErrorHandler(getApplicationContext(), error);
             }
         });
 
