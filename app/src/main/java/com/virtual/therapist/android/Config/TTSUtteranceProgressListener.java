@@ -9,9 +9,6 @@ import com.virtual.therapist.android.R;
 
 import java.util.Random;
 
-/**
- * Created by bas on 30-10-14.
- */
 public class TTSUtteranceProgressListener extends UtteranceProgressListener{
 
     private Context context;

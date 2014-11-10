@@ -2,16 +2,12 @@ package com.virtual.therapist.android.test;
 
 import android.test.InstrumentationTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
-import android.util.Log;
 
 import com.virtual.therapist.android.Config.HashUtil;
 import com.virtual.therapist.android.Network.VirtualTherapistClient;
 import com.virtual.therapist.android.Network.VirtualTherapistService;
 import com.virtual.therapist.android.Objects.User;
 
-import junit.framework.TestCase;
-
-import java.net.URL;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -19,9 +15,6 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-/**
- * Created by jeroenlammerts on 24-10-14.
- */
 public class ApiClientTest extends InstrumentationTestCase {
 
     private static boolean called;

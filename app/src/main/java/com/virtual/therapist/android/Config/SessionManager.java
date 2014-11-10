@@ -6,9 +6,6 @@ import android.content.SharedPreferences;
 import android.widget.Toast;
 import com.virtual.therapist.android.Activities.LoginActivity;
 
-/**
- * Created by Akatchi on 24-10-2014.
- */
 public class SessionManager
 {
     public SharedPreferences pref;

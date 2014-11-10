@@ -6,9 +6,6 @@ import android.location.LocationManager;
 
 import java.util.Date;
 
-/**
- * Created by bas on 23-10-14.
- */
 public class LocationUtil {
 
     private static LocationUtil instance;

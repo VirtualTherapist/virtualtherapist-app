@@ -4,9 +4,6 @@ import android.util.Log;
 
 import java.security.MessageDigest;
 
-/**
- * Created by bas on 20-10-14.
- */
 public class HashUtil
 {
 

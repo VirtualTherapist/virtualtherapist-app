@@ -120,13 +120,12 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
         setContentView(R.layout.activity_chat);
         //setContentView(new GIFView(this));
         showContextDialog();
-        View v = findViewById(R.id.img_therapist);
-        ViewGroup parent = (ViewGroup) v.getParent();
-        int index = parent.indexOfChild(v);
-        parent.removeView(v);
+
         gifView = new AnimatedGifImageView(this);
         gifView.setImageResource(R.drawable.vt_talking);
-        parent.addView(gifView, index);
+
+        RelativeLayout relativeLayout = (RelativeLayout)findViewById(R.id.activity_chat);
+        relativeLayout.addView(gifView, 1);
 
         listView            = (ListView) findViewById(R.id.listView1);
 //        RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -221,7 +220,7 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
     private void initChat()
     {
         session = new SessionManager(getApplicationContext());
-        //Controller of text to speech aanwezig is
+        // check text to speech available
         Intent checkIntent = new Intent();
         checkIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         startActivityForResult(checkIntent, TTS_DATA_CHECK);
@@ -270,7 +269,7 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
         listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
         listView.setAdapter(chatArrayAdapter);
 
-        //to scroll the list view to bottom on data change
+        // to scroll the list view to bottom on data change
         chatArrayAdapter.registerDataSetObserver(new DataSetObserver()
         {
             @Override
@@ -294,16 +293,15 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
     {
         hideSoftKeyboard();
 
-        //Show question into listview
+        // show question into listview
         this.sendChatMessage(question);
 
-        //Send question to the server and get the reply
+        // send question to the server and get the reply
         sendQuestion(question);
 
-        //Show answer into listview
+        // show answer into listview
 //        this.sendChatMessage(answer);
 
-        //Lees het antwoord voor
         return true;
     }
 
@@ -334,11 +332,11 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
                             @Override
                             public void run()
                             {
-                                //Spreek het antwoord uit
-//                                mTextToSpeech.speak(answerMessage, TextToSpeech.QUEUE_FLUSH, null);
+                                // speak answer
+                                // mTextToSpeech.speak(answerMessage, TextToSpeech.QUEUE_FLUSH, null);
                                 speak(answerMessage);
 
-                                //Voeg het antwoord toe aan de chat list
+                                // add answer to chat list
                                 sendChatMessage(answerMessage);
                             }
                         });
@@ -396,6 +394,7 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
             mTextToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, myHashAlarm);
         }
     }
+
     // Fired after TTS initialization
     public void onInit(int status)
     {
@@ -408,7 +407,7 @@ public class ChatBubbleActivity extends Activity implements TextToSpeech.OnInitL
             mTextToSpeech.setSpeechRate((float) 0.8);
             mTextToSpeech.setPitch((float) 1.3);
 
-            //Eerste bericht weergeven in de listview en dan die text ook uitspreken
+            // first message
             String firstMessage = "Hallo " + session.getFirstName() + ", waar kan ik je mee helpen?";
             this.sendChatMessage(firstMessage);
 //            mTextToSpeech.speak(firstMessage, TextToSpeech.QUEUE_FLUSH, null);

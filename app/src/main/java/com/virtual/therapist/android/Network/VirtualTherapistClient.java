@@ -4,9 +4,6 @@ import com.virtual.therapist.android.Config.Variables;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 
-/**
- * Created by jeroenlammerts on 10-10-14.
- */
 public class VirtualTherapistClient
 {
 

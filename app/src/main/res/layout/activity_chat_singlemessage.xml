@@ -17,7 +17,7 @@
             android:background="@drawable/bubble_a"
             android:paddingLeft="10dip"
             android:text="Hello bubbles!"
-            android:textColor="@android:color/primary_text_light" />
+            android:textColor="#ffffffff" />
 
     </LinearLayout>
 

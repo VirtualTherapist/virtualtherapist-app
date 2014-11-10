@@ -9,9 +9,6 @@ import com.virtual.therapist.android.R;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-/**
- * Created by jeroenlammerts on 05-11-14.
- */
 public class ApiErrorHandler {
 
     public ApiErrorHandler(Context context, RetrofitError error){

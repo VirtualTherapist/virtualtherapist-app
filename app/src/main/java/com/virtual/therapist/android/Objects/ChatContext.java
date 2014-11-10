@@ -1,8 +1,5 @@
 package com.virtual.therapist.android.Objects;
 
-/**
- * Created by bas on 23-10-14.
- */
 public class ChatContext {
     private String mood;
     private double lat = -1;
