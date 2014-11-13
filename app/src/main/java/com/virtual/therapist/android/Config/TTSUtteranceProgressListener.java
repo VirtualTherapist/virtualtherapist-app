@@ -55,8 +55,8 @@ public class TTSUtteranceProgressListener extends UtteranceProgressListener{
 
     @Override
     public void onDone(String s) {
-        tts.setPitch(1.5f);
-        tts.setSpeechRate(1);
+        tts.setPitch(1.3f);
+        tts.setSpeechRate(0.8f);
         mainHandler.post(new Runnable() {
             @Override
             public void run() {
