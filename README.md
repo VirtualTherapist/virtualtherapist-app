@@ -4,4 +4,4 @@ Virtual Therapist is a android app to help obesity patients. This app is a proto
 
 ## Android app
 
-Click [here](https://github.com/VirtualTherapist/virtualtherapist-app/raw/develop/app/app-release.apk) to download the app.
+Click [here](https://github.com/VirtualTherapist/virtualtherapist-app/raw/master/app/app-release.apk) to download the app.
